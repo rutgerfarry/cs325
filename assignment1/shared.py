@@ -1,20 +1,33 @@
 import math
 
-# Converts a string representing points to an int tuple, e.g. '4 1' => (4, 1).
-def point_tuple_from_string(point_string):
-    if len(point_string) < 3:
+class Point(object):
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        return "({0}, {1})".format(self.x, self.y)
+
+    def __repr__(self):
+        return "({0}, {1})".format(self.x, self.y)
+
+    @staticmethod
+    def distance(point1, point2):
+        return math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
+
+# Converts a string representing a point to a Point instance
+def point_from_string(point_string):
+    point_list = point_string.split(' ')
+    if len(point_list) != 2:
         return
 
-    point_list = point_string.split(' ')
-    point_tuple = tuple(map(int, point_list))
-    return point_tuple
+    point_list = map(int, point_list)
+    point = Point(point_list[0], point_list[1])
+    return point
 
 # Opens file containing newline-delimited list of points and
-# returns a list of int tuples.
+# returns a list of Points.
 def point_list_from_file(filename):
     point_file = open(filename, 'r').read()
-    point_tuples = map(point_tuple_from_string, point_file.split('\n'))
-    return filter(None, point_tuples)
-
-def distance(point1, point2):
-    return math.sqrt((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)
+    points = map(point_from_string, point_file.split('\n'))
+    return filter(None, points)
