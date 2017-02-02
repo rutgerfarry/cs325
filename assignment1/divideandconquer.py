@@ -5,6 +5,7 @@ from sys import argv
 from shared import point_list_from_file, Point
 
 def closest_pair_dnc(points):
+    # Recursive cases
     if len(points) == 3:
         dist1 = Point.distance(points[0], points[1])
         dist2 = Point.distance(points[1], points[2])
@@ -19,32 +20,30 @@ def closest_pair_dnc(points):
 
     # Split into left and right halves
     points.sort(key=lambda point: point.x)
-
     middle_index = len(points) / 2
     median = points[middle_index].x
     left_set = points[:middle_index]
     right_set = points[middle_index:]
 
+    # Run recursive algorithm on left and right halves
     closest_pair = min(closest_pair_dnc(left_set), closest_pair_dnc(right_set))
 
+    # Get middle set (technically a list)
     left_bound = median - closest_pair
     right_bound = median + closest_pair
-
     middle_set = [p for p in points if left_bound <= p.x <= right_bound]
-    middle_set.sort(key=lambda point: point.y)
 
-    print "points: {0}".format(points)
-    print "median: {0}".format(median)
-    print "closest_pair: {0}".format(closest_pair)
-    print "left_bound: {0}".format(left_bound)
-    print "right_bound: {0}".format(right_bound)
-    print "middle_set: {0}".format(middle_set)
+    return closest_cross_pair(middle_set, closest_pair)
 
-    return closest_pair
-
-def closest_cross_pair(points, distance):
-    return None
-
+def closest_cross_pair(points, min_distance):
+    points.sort(key=lambda point: point.y)
+    for idx, point1 in enumerate(points):
+        for point2 in points[idx + 1:]:
+            if point2.y - point1.y > min_distance:
+                break
+            distance = Point.distance(point1, point2)
+            min_distance = min(distance, min_distance)
+    return min_distance
 
 POINT_LIST = point_list_from_file(argv[1])
 print closest_pair_dnc(POINT_LIST)
