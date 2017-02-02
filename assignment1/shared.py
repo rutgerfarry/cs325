@@ -21,7 +21,7 @@ def point_from_string(point_string):
     if len(point_list) != 2:
         return
 
-    point_list = map(int, point_list)
+    point_list = map(float, point_list)
     point = Point(point_list[0], point_list[1])
     return point
 
