@@ -1,5 +1,5 @@
 """Determines the closest set of points from a file passed as a command
-line argument using a divide and conquer algorithm"""
+line argument using a naive divide and conquer algorithm"""
 
 from sys import argv
 from shared import point_list_from_file, Point
@@ -18,15 +18,33 @@ def closest_pair_dnc(points):
         return 0
 
     # Split into left and right halves
-    sorted_points = sorted(points, key=lambda point: point.x)
-    print sorted_points
-    median = len(sorted_points) / 2
-    left = sorted_points[:median]
-    right = sorted_points[median:]
+    points.sort(key=lambda point: point.x)
 
-    closest_pair = min(closest_pair_dnc(left), closest_pair_dnc(right))
+    middle_index = len(points) / 2
+    median = points[middle_index].x
+    left_set = points[:middle_index]
+    right_set = points[middle_index:]
+
+    closest_pair = min(closest_pair_dnc(left_set), closest_pair_dnc(right_set))
+
+    left_bound = median - closest_pair
+    right_bound = median + closest_pair
+
+    middle_set = [p for p in points if left_bound <= p.x <= right_bound]
+    middle_set.sort(key=lambda point: point.y)
+
+    print "points: {0}".format(points)
+    print "median: {0}".format(median)
+    print "closest_pair: {0}".format(closest_pair)
+    print "left_bound: {0}".format(left_bound)
+    print "right_bound: {0}".format(right_bound)
+    print "middle_set: {0}".format(middle_set)
 
     return closest_pair
+
+def closest_cross_pair(points, distance):
+    return None
+
 
 POINT_LIST = point_list_from_file(argv[1])
 print closest_pair_dnc(POINT_LIST)
