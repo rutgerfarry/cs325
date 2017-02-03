@@ -115,7 +115,7 @@ divideandconquer took 56.5322129726s for input of size 10^6
 ```
 
 ## Plotting the Runtime
-![alt](https://lh5.googleusercontent.com/7GPOSd-v5f91zhs48zDUlYNjgyyAg98lLorvqPZ8ZdPAS83AgezMwptTgOP0qLkYrzfwHvu8id44tao=w2880-h1564)
+![Runtime chart](./image.png)
 
 ## Interpratation and discussion
 I was suprised to see how long the enhanced divide and conquer algorithm took on my computer. I spent some time debugging to ensure the list was shrinking with each recursive call. It was. Despite seemingly implementing the algorithm correctly, it seems that the compare step for intersecting the chosen x points with the master sorted y list took much longer than *O(n)*. 
