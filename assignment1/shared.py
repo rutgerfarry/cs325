@@ -31,3 +31,16 @@ def point_list_from_file(filename):
     point_file = open(filename, 'r').read()
     points = map(point_from_string, point_file.split('\n'))
     return filter(None, points)
+
+def write_to_file(filename, string):
+    open(filename, 'w').write(str(string))
+    return
+
+def format_output(point):
+    point_string = str(point[0])
+    point_string += "\n{0} {1} {2} {3}".format(
+        point[1].x,
+        point[1].y,
+        point[2].x,
+        point[2].y)
+    return point_string

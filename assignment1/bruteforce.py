@@ -2,7 +2,7 @@
 line argument using a brute force algorithm"""
 
 from sys import argv
-from shared import point_list_from_file, Point
+from shared import point_list_from_file, write_to_file, Point
 
 # Takes a list of points, returns unsorted list of tuples containing
 # two points and the distance between them for every pair of points/
@@ -33,5 +33,9 @@ def format_point_list(points, min_distance):
             p[2].y)
     return point_string
 
-POINT_LIST = point_list_from_file(argv[1])
-print closest_pair_brute(POINT_LIST)
+# Prevent running if imported as a module
+if __name__ == "__main__":
+    POINT_LIST = point_list_from_file(argv[1])
+    result = closest_pair_brute(POINT_LIST)
+    print result
+    write_to_file('output_bruteforce.txt', result)
