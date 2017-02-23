@@ -21,19 +21,6 @@ void help(){
 	exit(EXIT_SUCCESS);
 }
 
-void testing(){
-
-	/* Solution */	
-	seqAli test;
-	test.getContents(input);
-	test.getCostFile(cost);
-	test.solution();
-	test.printValues(test.cost);
-
-
-
-}
-
 int main(int argc, char **argv)
 {
 	int opt; 
@@ -70,8 +57,12 @@ int main(int argc, char **argv)
 	}
 
 
-
-	testing();
+	/* Solution */	
+	seqAli test;
+	test.getContents(input);
+	test.getCostFile(cost);
+	test.solution();
+	test.printValues(test.cost);
 
 
 

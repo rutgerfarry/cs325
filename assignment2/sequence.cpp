@@ -15,7 +15,6 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
-#include <linux/limits.h>
 #endif
 
 /* C++ Headers */
@@ -41,10 +40,6 @@ private:
 	vector < vector <int> > DP;
 	vector <int> outCost;
 
-
-	int findCost( ){
-
-	}
 
 public:
 	vector <string> input;
@@ -223,22 +218,19 @@ void solution() {
 		 * Return D(m,n)
 		 */
 
+		int deletion, insertion, align;
+
 	 	for(i = 1; i < DP.size(); i++){
 			for(j = 1; j < DP[i].size(); j++){
-				if(DP[i-1][j]+1 > DP[i][j-1]+1){
-					if(DP[i][j-1]+1 > DP[i-1][j-1] + /* Cost*/){
+				deletion  = DP[i][j-1] + 1;
+				insertion = DP[i-2][j] + 1;
+				align     = DP[i-1][j-1] + diff();
+					
+				if(deletion > 
 
-					}
-				}
 
-				DP[i][j] = min(min(DP[i-1][j] + 1, 
-				                   DP[i][j-1] + 1),
-					           DP[i-1][j-1] + /* FIND COST HERE */ 2); /* Cost? */
 			}	
 		}
-		printValues(DP);
-
-	/* THE MEAT AND POTATOES */
 	
 		
 
