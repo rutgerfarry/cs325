@@ -5,7 +5,6 @@ from shared import CostMatrix, load_sequences_from_file, print_dynamic_table
 COST_MATRIX = CostMatrix.from_file(sys.argv[1])
 SEQUENCES = load_sequences_from_file(sys.argv[2])
 
-
 def diff(i, j):
     return COST_MATRIX.cost_for(i, j)
 
@@ -40,16 +39,16 @@ def backtrace(__seq_a__, __seq_b__, D):
         elif trace == shift_a:
             print "shift_a"
             print i, j
-            seq_a.insert(i, '-')
+            seq_b.insert(j, '-')
             i -= 1
         elif trace == shift_b:
             print "shift_b"
             print i, j
-            seq_b.insert(j, '-')
+            seq_a.insert(i, '-')
             j -= 1
         else:
             sys.exit("We shouldn't be here")
-    return (seq_a, seq_b)
+    return ''.join(seq_a), ''.join(seq_b)
 
 def align_sequences(sequence_a, sequence_b):
     # Setup sequences
