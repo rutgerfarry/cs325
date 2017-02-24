@@ -1,6 +1,7 @@
 import re
 import sys
 
+# Represents a cost file
 class CostMatrix(object):
     def __init__(self, matrix_string):
         # Remove non-alphanumerics and split into list
@@ -27,9 +28,11 @@ class CostMatrix(object):
         j = self.first_col.index(char2)
         return int(self.matrix[i][j])
 
+# Basically an enum for type-safe backtrace instructions
 class Shift(object):
     align, a_shift, b_shift = range(0, 3)
 
+# Helper class makes it easy to return a solution & prints nicely
 class Solution(object):
     def __init__(self, sequence_a, sequence_b, cost):
         self.sequence_a = sequence_a
@@ -52,6 +55,7 @@ def load_sequences_from_file(filename):
     sequences = [(x.split(',')[0], x.split(',')[1]) for x in sequences]
     return sequences
 
+# For debugging purposes
 def print_dynamic_table(table):
     flat_table = [el for sub_list in table for el in sub_list]
     longest_element = len(str(max(flat_table)))

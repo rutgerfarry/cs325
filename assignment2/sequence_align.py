@@ -14,6 +14,7 @@ def backtrace(__seq_a__, __seq_b__, B):
     i = len(__seq_a__)
     j = len(__seq_b__)
 
+    # Backtrace normally
     while i > 0 and j > 0:
         if B[i][j] == Shift.align:
             i -= 1
@@ -29,6 +30,7 @@ def backtrace(__seq_a__, __seq_b__, B):
             seq_a = ['-'] + seq_a
             seq_b = [__seq_b__[j]] + seq_b
 
+    # If we hit an edge of the array, work our way to [0, 0]
     while i > 0:
         i -= 1
         seq_a = [__seq_a__[i]] + seq_a
@@ -98,5 +100,7 @@ if __name__ == "__main__":
     else:
         sys.exit("ERROR: No input supplied via files or command line args.\n"
                  "USAGE: $ python sequence_align.py {COST_FILE} {INPUT_FILE}")
+
+    # Map solutions to list, write to file
     SOLUTIONS = [str(align_sequences(*sequence)) for sequence in SEQUENCES]
     write_to_file('imp2output.txt', '\n'.join(SOLUTIONS))
