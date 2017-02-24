@@ -1,4 +1,5 @@
 import sys
+from os import path
 from shared import CostMatrix, load_sequences_from_file, write_to_file, Shift, Solution
 
 # Returns the cost of aligning two bases
@@ -36,7 +37,7 @@ def backtrace(__seq_a__, __seq_b__, B):
         j -= 1
         seq_a = ['-'] + seq_a
         seq_b = [__seq_b__[j]] + seq_b
-    
+
     # Convert char array to string
     return ''.join(seq_a), ''.join(seq_b)
 
@@ -82,10 +83,14 @@ def align_sequences(sequence_a, sequence_b):
 
 # Prevent running if imported as a module
 if __name__ == "__main__":
-    # TODO: Look for "imp2input.txt" & "imp2cost.txt" if no command-line args
     if len(sys.argv) == 3:
         COST_MATRIX = CostMatrix.from_file(sys.argv[1])
         SEQUENCES = load_sequences_from_file(sys.argv[2])
+    elif path.isfile("imp2cost.txt") and path.isfile("imp2input.txt"):
+        COST_MATRIX = CostMatrix.from_file("imp2cost.txt")
+        SEQUENCES = load_sequences_from_file("imp2input.txt")
+    else:
+        sys.exit("ERROR: No input supplied via files or command line args.\n"
+                 "USAGE: $ python sequence_align.py {COST_FILE} {INPUT_FILE}")
     SOLUTIONS = [str(align_sequences(*sequence)) for sequence in SEQUENCES]
-    print '\n'.join(SOLUTIONS)
     write_to_file('imp2output.txt', '\n'.join(SOLUTIONS))
