@@ -27,6 +27,21 @@ class CostMatrix(object):
         j = self.first_col.index(char2)
         return int(self.matrix[i][j])
 
+class Shift(object):
+    align, a_shift, b_shift = range(0, 3)
+
+class Solution(object):
+    def __init__(self, sequence_a, sequence_b, cost):
+        self.sequence_a = sequence_a
+        self.sequence_b = sequence_b
+        self.cost = cost
+
+    def __str__(self):
+        return "{0},{1}:{2}".format(self.sequence_a, self.sequence_b, self.cost)
+
+    def __repr__(self):
+        return "{0},{1}:{2}".format(self.sequence_a, self.sequence_b, self.cost)
+
 # Returns a list of tuples containing two strings representing gene sequences
 # e.g. [("ACTG", "GGCC")]
 def load_sequences_from_file(filename):
@@ -46,3 +61,8 @@ def print_dynamic_table(table):
             padding = longest_element - len(str(el)) + 1
             line += ''.join(' ' * padding + str(el))
         print line
+
+def write_to_file(filename, string):
+    open(filename, 'w').write(str(string))
+    return
+

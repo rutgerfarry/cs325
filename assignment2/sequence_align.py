@@ -1,49 +1,43 @@
 import sys
-from shared import CostMatrix, load_sequences_from_file, print_dynamic_table
+from shared import CostMatrix, load_sequences_from_file, write_to_file, Shift, Solution
 
-# TODO: Look for "imp2input.txt" & "imp2cost.txt" if no command-line args
-COST_MATRIX = CostMatrix.from_file(sys.argv[1])
-SEQUENCES = load_sequences_from_file(sys.argv[2])
-
-def diff(i, j):
+# Returns the cost of aligning two bases
+def cost(i, j):
     return COST_MATRIX.cost_for(i, j)
 
-def backtrace(__seq_a__, __seq_b__, D):
-    seq_a = [c for c in __seq_a__]
-    seq_b = [c for c in __seq_b__]
+# Traverses a backtrace table B to return optimal gene alignment in a tuple
+def backtrace(__seq_a__, __seq_b__, B):
+    seq_a = []
+    seq_b = []
 
-    i = len(seq_a) - 1
-    j = len(seq_b) - 1
+    i = len(__seq_a__)
+    j = len(__seq_b__)
 
-    while i > 0 or j > 0:
-        no_shift = float("inf")
-        shift_a = float("inf")
-        shift_b = float("inf")
-
-        if i > 0 and j > 0:
-            no_shift = D[i - 1][j - 1]
-        if i > 0:
-            shift_a = D[i - 1][j]
-        if j > 0:
-            shift_b = D[i][j - 1]
-
-        trace = min(
-            no_shift,
-            shift_a,
-            shift_b
-        )
-
-        if trace == no_shift:
+    while i > 0 and j > 0:
+        if B[i][j] == Shift.align:
             i -= 1
             j -= 1
-        elif trace == shift_a:
-            seq_b.insert(j, '-')
+            seq_a = [__seq_a__[i]] + seq_a
+            seq_b = [__seq_b__[j]] + seq_b
+        elif B[i][j] == Shift.a_shift:
             i -= 1
-        elif trace == shift_b:
-            seq_a.insert(i, '-')
+            seq_a = [__seq_a__[i]] + seq_a
+            seq_b = ['-'] + seq_b
+        elif B[i][j] == Shift.b_shift:
             j -= 1
-        else:
-            sys.exit("We shouldn't be here")
+            seq_a = ['-'] + seq_a
+            seq_b = [__seq_b__[j]] + seq_b
+
+    while i > 0:
+        i -= 1
+        seq_a = [__seq_a__[i]] + seq_a
+        seq_b = ['-'] + seq_b
+    while j > 0:
+        j -= 1
+        seq_a = ['-'] + seq_a
+        seq_b = [__seq_b__[j]] + seq_b
+    
+    # Convert char array to string
     return ''.join(seq_a), ''.join(seq_b)
 
 def align_sequences(sequence_a, sequence_b):
@@ -51,29 +45,47 @@ def align_sequences(sequence_a, sequence_b):
     sequence_a = '-' + sequence_a
     sequence_b = '-' + sequence_b
 
-    # Setup dynamic table
+    # Setup dynamic programming table and backtrace table
     D = [[0 for _ in range(0, len(sequence_b))] for _ in range(0, len(sequence_a))]
-    D[0][0] = 0
+    B = [[0 for _ in range(0, len(sequence_b))] for _ in range(0, len(sequence_a))]
     for i in range(1, len(sequence_a)):
-        D[i][0] = COST_MATRIX.cost_for('-', sequence_a[i]) + D[i - 1][0]
+        D[i][0] = cost('-', sequence_a[i]) + D[i - 1][0]
     for j in range(1, len(sequence_b)):
-        D[0][j] = COST_MATRIX.cost_for('-', sequence_b[j]) + D[0][j - 1]
+        D[0][j] = cost('-', sequence_b[j]) + D[0][j - 1]
 
     # Run algorithm
     for i in range(1, len(sequence_a)):
         for j in range(1, len(sequence_b)):
-            D[i][j] = min(
-                D[i - 1][j] + 1,
-                D[i][j - 1] + 1,
-                D[i - 1][j - 1] + diff(sequence_a[i], sequence_b[j]))
+            a_shift = D[i - 1][j] + cost(sequence_a[i], '-')
+            b_shift = D[i][j - 1] + cost('-', sequence_b[j])
+            align = D[i - 1][j - 1] + cost(sequence_a[i], sequence_b[j])
+            D[i][j] = min(a_shift, b_shift, align)
+            # Save backtrace
+            if align == D[i][j]:
+                B[i][j] = Shift.align
+            elif a_shift == D[i][j]:
+                B[i][j] = Shift.a_shift
+            elif b_shift == D[i][j]:
+                B[i][j] = Shift.b_shift
 
-    tres = backtrace(sequence_a[1:], sequence_b[1:], D)
-    print sequence_a[1:]
-    print sequence_b[1:]
-    print "-" * 100
-    print tres[0]
-    print tres[1]
-    return D
+    trace = backtrace(sequence_a[1:], sequence_b[1:], B)
 
-sol = align_sequences(*SEQUENCES[0])
-print_dynamic_table(sol)
+    final_cost = D[len(sequence_a) - 1][len(sequence_b) - 1]
+    aligned_sequence_a = trace[0]
+    aligned_sequence_b = trace[1]
+
+    return Solution(
+        aligned_sequence_a,
+        aligned_sequence_b,
+        final_cost
+    )
+
+# Prevent running if imported as a module
+if __name__ == "__main__":
+    # TODO: Look for "imp2input.txt" & "imp2cost.txt" if no command-line args
+    if len(sys.argv) == 3:
+        COST_MATRIX = CostMatrix.from_file(sys.argv[1])
+        SEQUENCES = load_sequences_from_file(sys.argv[2])
+    SOLUTIONS = [str(align_sequences(*sequence)) for sequence in SEQUENCES]
+    print '\n'.join(SOLUTIONS)
+    write_to_file('imp2output.txt', '\n'.join(SOLUTIONS))
