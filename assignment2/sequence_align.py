@@ -60,7 +60,12 @@ def align_sequences(sequence_a, sequence_b):
             a_shift = D[i - 1][j] + cost(sequence_a[i], '-')
             b_shift = D[i][j - 1] + cost('-', sequence_b[j])
             align = D[i - 1][j - 1] + cost(sequence_a[i], sequence_b[j])
-            D[i][j] = min(a_shift, b_shift, align)
+            # Where the magic happens
+            D[i][j] = min(
+                a_shift,
+                b_shift,
+                align
+            )
             # Save backtrace
             if align == D[i][j]:
                 B[i][j] = Shift.align
@@ -83,6 +88,7 @@ def align_sequences(sequence_a, sequence_b):
 
 # Prevent running if imported as a module
 if __name__ == "__main__":
+    # Load from command line arguments or default files, otherwise exit
     if len(sys.argv) == 3:
         COST_MATRIX = CostMatrix.from_file(sys.argv[1])
         SEQUENCES = load_sequences_from_file(sys.argv[2])
