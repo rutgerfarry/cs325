@@ -37,13 +37,9 @@ def backtrace(__seq_a__, __seq_b__, D):
             i -= 1
             j -= 1
         elif trace == shift_a:
-            print "shift_a"
-            print i, j
             seq_b.insert(j, '-')
             i -= 1
         elif trace == shift_b:
-            print "shift_b"
-            print i, j
             seq_a.insert(i, '-')
             j -= 1
         else:
@@ -52,15 +48,16 @@ def backtrace(__seq_a__, __seq_b__, D):
 
 def align_sequences(sequence_a, sequence_b):
     # Setup sequences
-    sequence_a = '#' + sequence_a
-    sequence_b = '#' + sequence_b
+    sequence_a = '-' + sequence_a
+    sequence_b = '-' + sequence_b
 
     # Setup dynamic table
     D = [[0 for _ in range(0, len(sequence_b))] for _ in range(0, len(sequence_a))]
-    for i in range(0, len(sequence_a)):
-        D[i][0] = i
+    D[0][0] = 0
+    for i in range(1, len(sequence_a)):
+        D[i][0] = COST_MATRIX.cost_for('-', sequence_a[i]) + D[i - 1][0]
     for j in range(1, len(sequence_b)):
-        D[0][j] = j
+        D[0][j] = COST_MATRIX.cost_for('-', sequence_b[j]) + D[0][j - 1]
 
     # Run algorithm
     for i in range(1, len(sequence_a)):
@@ -71,9 +68,12 @@ def align_sequences(sequence_a, sequence_b):
                 D[i - 1][j - 1] + diff(sequence_a[i], sequence_b[j]))
 
     tres = backtrace(sequence_a[1:], sequence_b[1:], D)
+    print sequence_a[1:]
+    print sequence_b[1:]
+    print "-" * 100
     print tres[0]
     print tres[1]
     return D
 
-sol = align_sequences(SEQUENCES[0][0], SEQUENCES[0][1])
+sol = align_sequences(*SEQUENCES[0])
 print_dynamic_table(sol)
