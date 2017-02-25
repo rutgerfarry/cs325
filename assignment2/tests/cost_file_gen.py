@@ -1,4 +1,4 @@
-"""Outputs a sample cost file to stdout"""
+"""Outputs a sample cost file"""
 
 from random import randint
 
@@ -21,10 +21,3 @@ def replace_placeholder(x):
     if x == "#":
         return str(randint(0, 9))
     return x
-
-def print_matrix(matrix):
-    for submatrix in matrix:
-        print ",".join(submatrix)
-
-print_matrix(
-    random_cost_matrix(EMPTY_MATRIX))
