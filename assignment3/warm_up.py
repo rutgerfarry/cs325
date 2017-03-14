@@ -1,8 +1,12 @@
 from pulp import LpVariable, LpProblem, LpMaximize, LpMinimize, LpStatus, value
-import numpy as np
 
-points = np.array([[1, 2, 3, 5, 7, 8, 10], 
-                 [3, 5, 7, 11, 14, 15, 19]])
+points = [(1, 3),
+          (2, 5),
+          (3, 7),
+          (5, 11),
+          (7, 14),
+          (8, 15),
+          (10, 19)]
 
 prob = LpProblem("warmUp", LpMinimize)
 
@@ -12,10 +16,11 @@ b = LpVariable("b")
 prob += m
 
 # Make each point a constraint
-for i in range(points.shape[1]):
-    prob += a*points[0][i]+b-points[1][i] <= m
-    prob += -a*points[0][i]-b+points[1][i] <= m
+for point in points:
+    prob += a * point[0] + b - point[1] <= m
+    prob += -a * point[0] - b + point[1] <= m
     
 status = prob.solve()
 print status, LpStatus[status]
 print "a: {0} b: {1}".format(value(a), value(b))
+
