@@ -1,18 +1,21 @@
-from pulp import LpVariable, LpProblem, LpMaximize, LpStatus, value
+from pulp import LpVariable, LpProblem, LpMaximize, LpMinimize, LpStatus, value
+import numpy as np
 
-f = LpVariable("f", 0, 110000)
-h = LpVariable("h", 0)
+points = np.array([[1, 2, 3, 5, 7, 8, 10], 
+                 [3, 5, 7, 11, 14, 15, 19]])
 
-prob = LpProblem("myProblem", LpMaximize)
-prob += 1.2*f + 1.4*h
-prob += 1.5*f + h <= 180000
-prob += f + 2*h <= 240000
-prob += f <= 110000
+prob = LpProblem("warmUp", LpMinimize)
 
+m = LpVariable("m")
+a = LpVariable("a")
+b = LpVariable("b")
+prob += m
+
+# Make each point a constraint
+for i in range(points.shape[1]):
+    prob += a*points[0][i]+b-points[1][i] <= m
+    prob += -a*points[0][i]-b+points[1][i] <= m
+    
 status = prob.solve()
-
-print status
-
-print "f: {0}, h: {1}".format(value(f), value(h))
-
-print LpStatus[status]
+print status, LpStatus[status]
+print "a: {0} b: {1}".format(value(a), value(b))
