@@ -52,6 +52,7 @@ b: 1.8571492
 **TODO**
 
 
+
 ## Warming-up question: Local temperature change
 **Write summary here**
 
@@ -75,4 +76,3 @@ Discuss whether or not Corvallis' temperature is rising (per day and per century
 If you're reading the PDF version of this file, we generated it from `README.md` using pandoc. You can update it from the README file using:
 ```bash
 pandoc README.md --latex-engine=xelatex -o writeup.pdf
-```
