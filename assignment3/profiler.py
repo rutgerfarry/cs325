@@ -16,6 +16,8 @@ def collect_weather_data():
 
 
 def graph_warm_up():
+    plt.cla()
+    plt.clf()
 
     points = np.array([[1, 2, 3, 5, 7, 8 , 10], [3,5,7,11,14,15,19]])
 
@@ -39,6 +41,17 @@ def graph_warm_up():
     plt.savefig("docs/lineOBF_plot.png")
 
 def graph_forecast():
+    plt.cla()
+    plt.clf()
+
+    dataset = collect_weather_data()
+    day = []
+    avg_temp = []
+
+    for data in dataset:
+        day.append(data.day)
+        avg_temp.append(data.avg_temp)
+
     x0 = 10.135061
     x1 = 0.00010095409
     x2 = 5.2564156
@@ -49,9 +62,8 @@ def graph_forecast():
     plt.title("Local Temperature Change")
     plt.xlabel("d")
     plt.ylabel("T")
-
-
-    plt.savefig("docs/lineOBF_plot.png")
+    plt.plot(day, avg_temp, "r+")
+    plt.savefig("docs/forecast_plot.png")
 
 
 
