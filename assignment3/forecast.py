@@ -17,7 +17,7 @@ def create_weather_model(dataset):
     """Creates a weather model for an area based on average temps over time.
     Returns a tuple containing regression coefficients x0...x5 for the model,
     followed by the PuLP status object, eg. `(x0,x1,x2,x3,x4,x5,PuLP_status)`
-    
+
     :param dataset: A list of WeatherData objects representing data since 1952.
     """
 

@@ -22,8 +22,9 @@ def warm_up():
         prob += -a * point[0] - b + point[1] <= m
 
     status = prob.solve()
-    print status, LpStatus[status]
-    print "a: {0} b: {1}".format(value(a), value(b))
+    print "Status: " + LpStatus[status]
+    print "a: " + str(value(a))
+    print "b: " + str(value(b))
 
 # Prevent running if imported as a module
 if __name__ == "__main__":

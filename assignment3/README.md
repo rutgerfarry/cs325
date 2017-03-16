@@ -1,5 +1,5 @@
 # assignment3
-- Rhea Mae Edwards **(edwardrh)**, Miles Curry **(currymi)**& Rutger Farry **(farryr)**
+- Rhea Mae Edwards **(edwardrh)**, Miles Curry **(currymi)** & Rutger Farry **(farryr)**
 - CS 325
 - Dr. Xiaoli Fern
 - 15 March 2016
