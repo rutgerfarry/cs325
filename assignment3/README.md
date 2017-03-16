@@ -5,19 +5,16 @@
 - 15 March 2016
 
 ## Warm-up question: Least squares isn't good enough for me
-**Write summary here**
 The goal of this question was to determine the line of best fit using linear
-program. Given the set of points, `(x1, y1), (x2,y2), ... (xN, yN)`. find values of `a` and `b` to minimize: ![Prob 1 Objective
-Function](docs/prob1OF.png "Objective Function").
+program. Given the set of points, `(x1, y1), (x2,y2), ... (xN, yN)`, find values of `a` and `b` to minimize: 
+
+![Prob 1 Objective Function](docs/prob1OF.png "Objective Function").
 
 ### Linear program description
-**TODO**
-To turn this into a linear program, the variable `m` was created to represent as
-the objective function to be  *minimized*. With values: `(1,3), (2,5), (3,7),
-(5,11), (7,14), (8,15), (10, 19)`.
+To turn this into a linear program, the variable `m` was created to represent as the objective function to be  *minimized*. With values: `(1,3), (2,5), (3,7), (5,11), (7,14), (8,15), (10, 19)`.
 
     * Objective: `Min m`
-    
+
     Such that:
 
     * `a * x + b - y <= m`
@@ -25,16 +22,13 @@ the objective function to be  *minimized*. With values: `(1,3), (2,5), (3,7),
     * For all points `(x1, y1), (x2, y2), ... (xN, yN)`.
 
 ### Running the code
-**TODO**
-The script was built in Python 2 and uses [PuLP] as its linear program solver as
-well as numpy Before running the script, PuLP will need to be installed.
+The script was built in Python 2 and uses PuLP as its linear program solver as well as numpy. Before running the script, PuLP will need to be installed.
 
 ```bash
 pip install -y requirements.txt     # Install PuLP
 python warm_up.py                   # Run the Script
 ```
 ### Solution
-**TODO**
 The best values of `a` and `b`, given the set of points: `(1,3), (2,5), (3,7),
 (5,11), (7,14), (8,15), (10, 19)` found by the script is:
 
@@ -50,7 +44,6 @@ b: 1.8571492
 ```
 ### Plot
 **TODO**
-
 
 
 ## Warming-up question: Local temperature change
@@ -69,10 +62,10 @@ This linear program was first presented by Robert Vanderbei in his paper [Local 
 
 The model is split into three parts, with a *linear trend* indicating overall rise in temperature over time, a *seasonal pattern* representing the temperature based on day of the year and a *solar cycle* representing the change in temperature based on Earth's position relative to the sun. 
 
-`T(d)` will be the predicted temperature for that day after the regression coefficients are calculated. In this case, `d` should equal the number of days since May 1, 1952 (first day in NOAA data), for example, for today, March 15, 2017, we'd plug in `d = 23695`.
+`T(d)` is the predicted temperature for that day after the regression coefficients are calculated. In this case, `d` should equal the number of days since May 1, 1952 (first day in NOAA data). For example, if calculating the temperature for today, March 15, 2017, we'd plug in `d = 23695`.
 
 ### Solution
-The raw output of our program, using Corvallis data downloaded from Canvas on March 15, 2017 is as follows:
+The raw output of our program, using the Corvallis data downloaded from Canvas, is as follows:
 ```bash
 $ python forecast.py Corvallis.csv
 Status: Optimal
@@ -96,9 +89,10 @@ Pluggin this into the equatiuon, we get the following equation, which should giv
 - linear part of the curve x0 + x1 · d.
 
 ### Reflection
-Looking back at the [output of the linear equation solver](#solution), the most interesting variable is probably `x1`, which is the slope of the linear trend of temperature change in Corvallis, OR. This shows that, on average, the temperature has been rising by 0.00010095409°C per day since May 1, 1952. This translates to a rise of roughly 0.369°C, or 0.6642°F per decade. This is a little higher than the EPA's calculations of rise in US temperatures of 0.29 to 0.46°F per decade since 1979, but is not unreasonable.
+Looking back at the [output of the linear equation solver](#solution), the most interesting variable is probably `x1`, which is the slope of the linear trend of temperature change in Corvallis, OR. This shows that, on average, the temperature has been rising by ~ 0.0001°C per day since May 1, 1952. This translates to a rise of roughly 0.37°C, or 0.66°F per decade. This is a little higher than the EPA's calculations of rise in US temperatures of 0.29 to 0.46°F per decade since 1979, but is not unreasonable.
 
 ## Meta
 If you're reading the PDF version of this file, we generated it from `README.md` using pandoc. You can update it from the README file using:
 ```bash
 pandoc README.md --latex-engine=xelatex -o writeup.pdf
+```
