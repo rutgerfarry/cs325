@@ -1,2 +1,2 @@
 # cs325
-Introduction to Algorithms @OSU
+Analysis of Algorithms [@OSU](http://oregonstate.edu)
